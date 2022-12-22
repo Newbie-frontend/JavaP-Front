@@ -11,17 +11,21 @@ const apiClient = axios.create({
 });
 
 export default {
-  getBinek() {
-    return apiClient.get("/binek");
+  getBinek(routeAddress) {
+    if (routeAddress == "?") return apiClient.get("/binek");
+    else return apiClient.get("/binek/search" + routeAddress);
   },
-  getIsMakinesi() {
-    return apiClient.get("/ismakinesi");
+  getIsMakinesi(routeAddress) {
+    if (routeAddress == "?") return apiClient.get("/ismakinesi");
+    else return apiClient.get("/ismakinesi/search" + routeAddress);
   },
-  getOtobus() {
-    return apiClient.get("/otobus");
+  getOtobus(routeAddress) {
+    if (routeAddress == "?") return apiClient.get("/otobus");
+    else return apiClient.get("/otobus/search" + routeAddress);
   },
-  getKamyon() {
-    return apiClient.get("/kamyon");
+  getKamyon(routeAddress) {
+    if (routeAddress == "?") return apiClient.get("/kamyon");
+    else return apiClient.get("/kamyon/search" + routeAddress);
   },
   getCars() {
     return apiClient.get("/cars");

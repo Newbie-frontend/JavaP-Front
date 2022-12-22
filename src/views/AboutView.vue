@@ -80,6 +80,17 @@
             :options="keys[2].options"
           ></b-form-select>
         </div>
+        <div class="my-2 d-flex labelFull">
+          <label
+            class="labelsClass font-weight-600 fs-20 d-flex align-items-center"
+            >Sehir</label
+          >
+          <b-form-input
+            class="formClass-text"
+            v-model="araba.adres"
+            placeholder="Şehri giriniz"
+          ></b-form-input>
+        </div>
         <div class="my-2 d-flex labelFull" v-if="arabaTipi">
           <label
             for=""
@@ -111,9 +122,6 @@
           >Sorgula</b-button
         >
       </b-form>
-      <ul>
-        <li v-for="(car, index) in cars" :key="index">{{ car }}</li>
-      </ul>
     </div>
   </div>
 </template>
@@ -139,6 +147,7 @@ export default {
             { value: "Ferari", text: "Ferari" },
             { value: "Fiyat", text: "Fiyat" },
             { value: "Ford", text: "Ford" },
+            { value: "CAT", text: "CAT" },
           ],
         },
         {
@@ -207,13 +216,15 @@ export default {
       store.dispatch("getCars");
     },
     onSubmit() {
-      this.$store.dispatch("getCars", this.arabaTipi).then(() => {
-        this.$router.push({
-          name: "result",
-          params: { id: this.araba.id },
+      this.$store
+        .dispatch("getCars", { arabaTipi: this.arabaTipi, araba: this.araba })
+        .then(() => {
+          this.$router.push({
+            name: "result",
+            params: { id: this.araba.id },
+          });
+          this.araba = this.createFreshCar();
         });
-        this.araba = this.createFreshCar();
-      });
     },
     createFreshCar() {
       if (this.arabaTipi == null)
