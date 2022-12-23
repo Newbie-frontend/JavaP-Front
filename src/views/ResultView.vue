@@ -29,6 +29,6 @@ export default {
   width: 200px;
 }
 .width {
-  width: 1240px;
+  max-width: 1360px;
 }
 </style>

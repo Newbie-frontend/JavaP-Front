@@ -1,28 +1,30 @@
 <template>
-  <div class="m-2" v-if="isSelected">
+  <div class="m-2 cartwidth" v-if="isSelected">
     <b-card no-body>
       <template #header>
         <h4 class="mb-0">{{ arabaTipi }}</h4>
       </template>
 
       <b-card-body>
-        <b-card-title>{{ car.marka }}</b-card-title>
+        <b-card-title
+          ><b>{{ car.marka }}</b></b-card-title
+        >
         <b-card-sub-title class="mb-2">{{ car.model }}</b-card-sub-title>
         <b-card-text>
-          Arabanin Fiyati: {{ car.fiyat }} <br />
-          Renk: {{ car.renk }} <br />
-          Yakit Tipi: {{ car.yakit }}
+          Arabanin Fiyati: <b>{{ car.fiyat }}</b> <br />
+          Renk: <b>{{ car.renk }}</b> <br />
+          Yakit Tipi: <b>{{ car.yakit }}</b>
         </b-card-text>
       </b-card-body>
 
       <b-list-group flush>
         <b-list-group-item
           >{{ firstText }}:
-          {{ car[firstText.toLowerCase()] }}</b-list-group-item
+          <b>{{ car[firstText.toLowerCase()] }}</b></b-list-group-item
         >
         <b-list-group-item
           >{{ secondText }}:
-          {{ car[secondText.toLowerCase()] }}</b-list-group-item
+          <b>{{ car[secondText.toLowerCase()] }}</b></b-list-group-item
         >
       </b-list-group>
 
@@ -141,5 +143,8 @@ export default {
   background-color: rgb(227, 58, 58);
   cursor: pointer;
   font-size: 22px;
+}
+.cartwidth {
+  width: 20rem;
 }
 </style>

@@ -98,7 +98,7 @@
           >
           <b-form-select
             class="formClass"
-            v-model="araba.yakitTipi"
+            v-model="araba.yakit"
             :options="keys[2].options"
           ></b-form-select>
         </div>
@@ -109,7 +109,7 @@
           >
           <b-form-input
             class="formClass-text"
-            v-model="araba.adres"
+            v-model="araba.sehir"
             placeholder="Şehri giriniz"
           ></b-form-input>
         </div>
@@ -121,7 +121,7 @@
           >
           <b-form-input
             class="formClass-text"
-            v-model="araba.text1"
+            v-model="araba[text1]"
             placeholder="Istenilen Degeri giriniz"
           ></b-form-input>
         </div>
@@ -133,7 +133,7 @@
           >
           <b-form-input
             class="formClass-text"
-            v-model="araba.text2"
+            v-model="araba[text2]"
             placeholder="Istenilen Degeri giriniz"
           ></b-form-input>
         </div>
@@ -245,17 +245,17 @@ export default {
         this.isSelected = true;
         this.araba = this.createFreshCar();
         if (newValue == "binek") {
-          this.text1 = "Binek Araba Tipi";
-          this.text2 = "Vites Tipi";
+          this.text1 = "tip";
+          this.text2 = "vites";
         } else if (newValue == "isMakinesi") {
-          this.text1 = "İş Makinesi Ağırlığı";
-          this.text2 = "Tipi";
+          this.text1 = "agirlik";
+          this.text2 = "tip";
         } else if (newValue == "otobus") {
-          this.text1 = "Uzunluk";
-          this.text2 = "Koltuk Sayısı";
+          this.text1 = "uzunluk";
+          this.text2 = "koltukSayisi";
         } else if (newValue == "kamyon") {
-          this.text1 = "Uzunluk";
-          this.text2 = "Taşıyabilecek yük";
+          this.text1 = "uzunluk";
+          this.text2 = "tasiyabilecekYuk";
         } else if (newValue == null) {
           this.text1 = "";
           this.text2 = "";
@@ -289,8 +289,8 @@ export default {
           model: null,
           fiyat: null,
           renk: "",
-          yakitTipi: "",
-          adres: "",
+          yakit: "",
+          sehir: "",
         };
       else if (this.arabaTipi == "binek")
         return {
@@ -298,8 +298,8 @@ export default {
           model: null,
           fiyat: null,
           renk: "",
-          yakitTipi: "",
-          adres: "",
+          yakit: "",
+          sehir: "",
           tip: "",
           vites: "",
         };
@@ -309,8 +309,8 @@ export default {
           model: null,
           fiyat: null,
           renk: "",
-          yakitTipi: "",
-          adres: "",
+          yakit: "",
+          sehir: "",
           agirlik: null,
           tip: "",
         };
@@ -320,28 +320,32 @@ export default {
           model: null,
           fiyat: null,
           renk: "",
-          yakitTipi: "",
-          adres: "",
+          yakit: "",
+          sehir: "",
           uzunluk: null,
           koltukSayisi: null,
         };
-      else if (this.arabaTipi == "Kamyon")
+      else if (this.arabaTipi == "kamyon")
         return {
           marka: "",
           model: null,
           fiyat: null,
           renk: "",
-          yakitTipi: "",
-          adres: "",
+          yakit: "",
+          sehir: "",
           uzunluk: "",
           tasiyabilecekYuk: "",
         };
     },
     arabaEkle() {
-      this.$store.dispatch("sendCar", {
-        arabaTipi: this.arabaTipi,
-        araba: this.araba,
-      });
+      this.$store
+        .dispatch("sendCar", {
+          arabaTipi: this.arabaTipi,
+          araba: this.araba,
+        })
+        .then(() => {
+          this.araba = this.createFreshCar();
+        });
     },
   },
   computed: {
