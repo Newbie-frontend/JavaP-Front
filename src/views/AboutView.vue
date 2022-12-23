@@ -6,8 +6,30 @@
       </h1>
       <b-form
         @submit.prevent="onSubmit"
-        class="p-5 border rounded d-flex flex-column bg-secondary"
+        class="p-5 border rounded d-flex flex-column panelColor"
       >
+        <b-alert
+          v-model="showDismissibleAlert1"
+          variant="danger"
+          dismissible
+          fade
+          >Araba Eklemek için Bütün inputları doldurmanız
+          gerekmektedir.</b-alert
+        >
+        <b-alert
+          v-model="showDismissibleAlert2"
+          variant="danger"
+          dismissible
+          fade
+          >Sorgulamak için araba tipini seçmeniz gerekir.</b-alert
+        >
+        <b-alert
+          v-model="showDismissibleAlert3"
+          variant="danger"
+          dismissible
+          fade
+          >Üsteki uyarılara uydukten sonra ilgili düğmeler açılır.</b-alert
+        >
         <div class="my-2 d-flex labelFull">
           <label
             for=""
@@ -115,12 +137,38 @@
             placeholder="Istenilen Degeri giriniz"
           ></b-form-input>
         </div>
-        <b-button
-          :disabled="!isSelected"
-          type="submit"
-          variant="outline-light paddingX py-2 mt-5 align-self-center"
-          >Sorgula</b-button
-        >
+        <div class="d-flex justify-content-center">
+          <b-button
+            class="mr-5"
+            :disabled="!isSelected"
+            type="submit"
+            variant="outline-light paddingX py-2 mt-5 align-self-center"
+            >Sorgula</b-button
+          >
+          <b-button
+            v-b-modal.modal-1
+            :disabled="!allFilled"
+            @click="arabaEkle"
+            variant="outline-light paddingX py-2 mt-5 align-self-center"
+            >+Ekle</b-button
+          >
+          <b-modal
+            id="modal-1"
+            title="Server Cevabi"
+            ref="my-modal"
+            hide-footer
+            hide-header
+          >
+            <p class="my-4 text-center">Araba Eklendi!</p>
+            <b-button
+              class="mt-3"
+              variant="outline-success"
+              block
+              @click="hideModal"
+              >Tamam</b-button
+            >
+          </b-modal>
+        </div>
       </b-form>
     </div>
   </div>
@@ -134,6 +182,10 @@ export default {
     return {
       arabaTipi: null,
       isSelected: false,
+      allFilled: true,
+      showDismissibleAlert1: true,
+      showDismissibleAlert2: true,
+      showDismissibleAlert3: true,
       keys: [
         {
           name: "marka",
@@ -191,6 +243,7 @@ export default {
     arabaTipi(newValue, oldValue) {
       if (newValue != oldValue) {
         this.isSelected = true;
+        this.araba = this.createFreshCar();
         if (newValue == "binek") {
           this.text1 = "Binek Araba Tipi";
           this.text2 = "Vites Tipi";
@@ -212,6 +265,9 @@ export default {
     },
   },
   methods: {
+    hideModal() {
+      this.$refs["my-modal"].hide();
+    },
     getCars() {
       store.dispatch("getCars");
     },
@@ -221,7 +277,7 @@ export default {
         .then(() => {
           this.$router.push({
             name: "result",
-            params: { id: this.araba.id },
+            params: { car: this.araba },
           });
           this.araba = this.createFreshCar();
         });
@@ -281,6 +337,12 @@ export default {
           tasiyabilecekYuk: "",
         };
     },
+    arabaEkle() {
+      this.$store.dispatch("sendCar", {
+        arabaTipi: this.arabaTipi,
+        araba: this.araba,
+      });
+    },
   },
   computed: {
     ...mapState(["cars"]),
@@ -326,6 +388,9 @@ export default {
 .fs-20 {
   font-size: 20px;
   color: white;
+}
+.panelColor {
+  background-color: rgba(74, 119, 141, 0.7);
 }
 @media only screen and (max-width: 992px) {
   .labelFull {

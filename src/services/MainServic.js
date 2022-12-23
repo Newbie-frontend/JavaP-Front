@@ -27,13 +27,31 @@ export default {
     if (routeAddress == "?") return apiClient.get("/kamyon");
     else return apiClient.get("/kamyon/search" + routeAddress);
   },
-  getCars() {
-    return apiClient.get("/cars");
+  deleteBinek(id) {
+    return apiClient.delete("/binek/" + id);
   },
-  getCar(id) {
-    return apiClient.get("/cars/" + id);
+  deleteKamyon(id) {
+    return apiClient.delete("/kamyon/" + id);
   },
-  postCar(car) {
-    return apiClient.post("/cars", car);
+  deleteIsMakinesi(id) {
+    return apiClient.delete("/ismakinesi/" + id);
+  },
+  deleteOtobus(id) {
+    return apiClient.delete("/otobus/" + id);
+  },
+  postBinek(araba) {
+    return apiClient.post("/binek", araba);
+  },
+  postIsMakinesi(araba) {
+    return apiClient.post("/ismakinesi", araba);
+  },
+  postOtobus(araba) {
+    return apiClient.post("/otobus", araba);
+  },
+  postKamyon(araba) {
+    return apiClient.post("/kamyon", araba);
+  },
+  getAraba(id) {
+    return apiClient.get("/araba/" + id);
   },
 };

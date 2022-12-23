@@ -8,14 +8,15 @@ export default new Vuex.Store({
   state: {
     cars: [],
     araba: null,
+    serverResponse: null,
   },
   getters: {},
   mutations: {
     SET_CARS(state, cars) {
       state.cars = cars;
     },
-    SET_NOTIFIED_CAR(state, car) {
-      state.araba = car;
+    SET_SERVERRESPONSE(state, serverResponse) {
+      state.serverResponse = serverResponse;
     },
   },
   actions: {
@@ -132,8 +133,22 @@ export default new Vuex.Store({
           });
       }
     },
-    notifyCar({ commit }, araba) {
-      commit("SET_NOTIFIED_CAR", araba);
+    arabaSil({ state }, { id }) {
+      console.log(state.araba);
+      console.log("Store ID: " + id);
+      MainService.deleteIsMakinesi(id);
+    },
+    sendCar({ commit }, { arabaTipi, araba }) {
+      if (arabaTipi == "binek") {
+        MainService.postBinek(araba);
+      } else if (arabaTipi == "isMakinesi") {
+        MainService.postIsMakinesi(araba);
+      } else if (arabaTipi == "otobus") {
+        MainService.postOtobus(araba);
+      } else if (arabaTipi == "kamyon") {
+        MainService.postKamyon(araba);
+      }
+      commit("SET_SERVERRESPONSE", false);
     },
   },
   modules: {},
