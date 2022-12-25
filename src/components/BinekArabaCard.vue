@@ -29,9 +29,10 @@
       </b-list-group>
 
       <b-card-body
+        @click="aracSil"
         class="text-center d-flex justify-content-center align-items-center heightStyle silHover"
       >
-        <a class="card-link silColor" @click="aracSil">Aracı Sil</a>
+        <a class="card-link silColor">Aracı Sil</a>
       </b-card-body>
     </b-card>
   </div>

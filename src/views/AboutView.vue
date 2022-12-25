@@ -9,26 +9,20 @@
         class="p-5 border rounded d-flex flex-column panelColor"
       >
         <b-alert
-          v-model="showDismissibleAlert1"
-          variant="danger"
-          dismissible
-          fade
-          >Araba Eklemek için Bütün inputları doldurmanız
-          gerekmektedir.</b-alert
-        >
-        <b-alert
           v-model="showDismissibleAlert2"
           variant="danger"
           dismissible
           fade
-          >Sorgulamak için araba tipini seçmeniz gerekir.</b-alert
+          >Sorgulamak için araba tipini seçmeniz gerekir. uyarılara uydukten
+          sonra ilgili düğmeler açılır.</b-alert
         >
         <b-alert
-          v-model="showDismissibleAlert3"
+          v-model="showDismissibleAlert1"
           variant="danger"
           dismissible
           fade
-          >Üsteki uyarılara uydukten sonra ilgili düğmeler açılır.</b-alert
+          >Araba Eklemek için aşağadaki Eklemeye git düğmesine basarak Ekleme
+          paneline gidiniz gerekmektedir.</b-alert
         >
         <div class="my-2 d-flex labelFull">
           <label
@@ -52,6 +46,7 @@
             class="formClass"
             v-model="araba.marka"
             :options="keys[0].options"
+            :select-size="4"
           ></b-form-select>
         </div>
         <div class="my-2 d-flex labelFull">
@@ -137,37 +132,27 @@
             placeholder="Istenilen Degeri giriniz"
           ></b-form-input>
         </div>
-        <div class="d-flex justify-content-center">
+        <div class="d-flex justify-content-center mt-5">
           <b-button
-            class="mr-5"
             :disabled="!isSelected"
             type="submit"
-            variant="outline-light paddingX py-2 mt-5 align-self-center"
-            >Sorgula</b-button
-          >
+            variant="outline-light"
+            class="paddingX py-2 mr-5 align-self-center"
+            >Sorgula
+            <b-icon icon="search" scale="1" variant="outline-light"></b-icon
+          ></b-button>
           <b-button
-            v-b-modal.modal-1
-            :disabled="!allFilled"
-            @click="arabaEkle"
-            variant="outline-light paddingX py-2 mt-5 align-self-center"
-            >+Ekle</b-button
-          >
-          <b-modal
-            id="modal-1"
-            title="Server Cevabi"
-            ref="my-modal"
-            hide-footer
-            hide-header
-          >
-            <p class="my-4 text-center">Araba Eklendi!</p>
-            <b-button
-              class="mt-3"
-              variant="outline-success"
-              block
-              @click="hideModal"
-              >Tamam</b-button
-            >
-          </b-modal>
+            :to="{ name: 'add' }"
+            variant="outline-light"
+            class="paddingX align-self-center py-3 buttonFontSize d-flex justify-content-center align-items-center"
+            >Eklemeye Git
+            <b-icon
+              icon="box-arrow-right"
+              scale="1.5"
+              variant="outline-light"
+              class="ml-4"
+            ></b-icon
+          ></b-button>
         </div>
       </b-form>
     </div>
@@ -177,6 +162,7 @@
 <script>
 import store from "@/store";
 import { mapState } from "vuex";
+import { required } from "vuelidate/lib/validators";
 export default {
   data() {
     return {
@@ -200,6 +186,15 @@ export default {
             { value: "Fiyat", text: "Fiyat" },
             { value: "Ford", text: "Ford" },
             { value: "CAT", text: "CAT" },
+            { value: "JBC", text: "JBC" },
+            { value: "Hitachi", text: "Hitachi" },
+            { value: "AKIA", text: "AKIA" },
+            { value: "BMC", text: "BMC" },
+            { value: "DAF", text: "DAF" },
+            { value: "Hyundai", text: "Hyundai" },
+            { value: "MAN", text: "MAN" },
+            { value: "Scania", text: "Scania" },
+            { value: "Iveco", text: "Iveco" },
           ],
         },
         {
@@ -229,7 +224,7 @@ export default {
       ],
       araba: this.createFreshCar(),
       options: [
-        { value: null, text: "-- Bir Araba tipi seciniz --" },
+        { value: null, text: "-- Bir Araba tipi seciniz --", disabled: true },
         { value: "binek", text: "Binek" },
         { value: "isMakinesi", text: "İş Makinesi" },
         { value: "otobus", text: "Otobüs" },
@@ -262,6 +257,16 @@ export default {
           this.isSelected = false;
         }
       }
+    },
+  },
+  validations: {
+    event: {
+      marka: { required },
+      model: { required },
+      fiyat: { required },
+      renk: { required },
+      yakit: { required },
+      sehir: { required },
     },
   },
   methods: {
@@ -395,6 +400,9 @@ export default {
 }
 .panelColor {
   background-color: rgba(74, 119, 141, 0.7);
+}
+.buttonFontSize {
+  font-size: 19px;
 }
 @media only screen and (max-width: 992px) {
   .labelFull {

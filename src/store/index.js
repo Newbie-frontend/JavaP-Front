@@ -23,38 +23,28 @@ export default new Vuex.Store({
     getCars({ commit }, { arabaTipi, araba }) {
       let routeAddress = "?";
       //create route address
-      console.log(araba);
-      try {
-        if (araba.marka) {
-          routeAddress = routeAddress + "marka=" + araba.marka;
-        }
-        if (araba.model) {
-          routeAddress =
-            routeAddress != "?" ? routeAddress + "&" : routeAddress;
-          routeAddress = routeAddress + "model=" + araba.model;
-        }
-        if (araba.fiyat) {
-          routeAddress =
-            routeAddress != "?" ? routeAddress + "&" : routeAddress;
-          routeAddress = routeAddress + "fiyat=" + araba.fiyat;
-        }
-        if (araba.renk) {
-          routeAddress =
-            routeAddress != "?" ? routeAddress + "&" : routeAddress;
-          routeAddress = routeAddress + "renk=" + araba.renk;
-        }
-        if (araba.yakitTipi) {
-          routeAddress =
-            routeAddress != "?" ? routeAddress + "&" : routeAddress;
-          routeAddress = routeAddress + "yakit=" + araba.yakitTipi;
-        }
-        if (araba.adres) {
-          routeAddress =
-            routeAddress != "?" ? routeAddress + "&" : routeAddress;
-          routeAddress = routeAddress + "sehir=" + araba.adres;
-        }
-      } catch (e) {
-        console.log("sorun burda");
+      if (araba.marka) {
+        routeAddress = routeAddress + "marka=" + araba.marka;
+      }
+      if (araba.model) {
+        routeAddress = routeAddress != "?" ? routeAddress + "&" : routeAddress;
+        routeAddress = routeAddress + "model=" + araba.model;
+      }
+      if (araba.fiyat) {
+        routeAddress = routeAddress != "?" ? routeAddress + "&" : routeAddress;
+        routeAddress = routeAddress + "fiyat=" + araba.fiyat;
+      }
+      if (araba.renk) {
+        routeAddress = routeAddress != "?" ? routeAddress + "&" : routeAddress;
+        routeAddress = routeAddress + "renk=" + araba.renk;
+      }
+      if (araba.yakitTipi) {
+        routeAddress = routeAddress != "?" ? routeAddress + "&" : routeAddress;
+        routeAddress = routeAddress + "yakit=" + araba.yakitTipi;
+      }
+      if (araba.adres) {
+        routeAddress = routeAddress != "?" ? routeAddress + "&" : routeAddress;
+        routeAddress = routeAddress + "sehir=" + araba.adres;
       }
 
       //request from service
@@ -134,8 +124,7 @@ export default new Vuex.Store({
       }
     },
     arabaSil({ state }, { id }) {
-      console.log(state.araba);
-      console.log("Store ID: " + id);
+      console.log(state.serverResponse);
       MainService.deleteIsMakinesi(id);
     },
     sendCar({ commit }, { arabaTipi, araba }) {
@@ -147,8 +136,9 @@ export default new Vuex.Store({
         MainService.postOtobus(araba);
       } else if (arabaTipi == "kamyon") {
         MainService.postKamyon(araba);
+      } else {
+        commit("SET_SERVERRESPONSE", false);
       }
-      commit("SET_SERVERRESPONSE", false);
     },
   },
   modules: {},
